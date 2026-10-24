@@ -51,6 +51,11 @@
       <HintPath>$(GameDir)\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- Aircraft derives from Mirage's NetworkBehaviour; comparing CombatHUD.aircraft needs it. -->
+    <Reference Include="Mirage">
+      <HintPath>$(GameDir)\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <!-- CombatHUD.targetDesignator is a UnityEngine.UI.Image. -->
     <Reference Include="UnityEngine.UI">
       <HintPath>$(GameDir)\NuclearOption_Data\Managed\UnityEngine.UI.dll</HintPath>

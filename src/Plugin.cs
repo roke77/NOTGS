@@ -19,9 +19,11 @@ namespace NOTGS
         internal static ManualLogSource? Log;
         internal static ConfigEntry<bool>? Enabled;
         internal static ConfigEntry<float>? PickRadius;
+        internal static ConfigEntry<bool>? ShowMarker;
 
-        // Everything here is static (config entries, Harmony patches, the gaze thread), so it keeps
-        // working after the game destroys this plugin's GameObject on the way to the main menu.
+        // Everything here is static (config entries, Harmony patches, the gaze thread) or lives on
+        // GazeMarker's own GameObject, so it keeps working after the game destroys this plugin's
+        // GameObject on the way to the main menu.
         private void Awake()
         {
             Log = Logger;
@@ -32,10 +34,13 @@ namespace NOTGS
                 new ConfigDescription("How far from your gaze point, in screen pixels, a unit marker can be and still get selected. " +
                     "The game's own diamond uses 100. Raise it if gaze lands short of units near the screen edges.",
                     new AcceptableValueRange<float>(50f, 600f)));
+            ShowMarker = Config.Bind("Gaze select", "Show gaze marker", false,
+                "Draws a red circle, Pick radius in size, where you are looking while flying. A unit marker inside it is one SELECT can pick.");
             ConfigEntry<string> dllPath = Config.Bind("Tobii", "Stream Engine path", TobiiGaze.DefaultDllPath,
                 "tobii_stream_engine.dll from your Tobii Experience install. Restart the game after changing it.");
 
             TobiiGaze.Start(dllPath.Value, msg => Log?.LogInfo(msg));
+            GazeMarker.SpawnOnFirstScene();
 
             try { new Harmony(PluginGuid).PatchAll(typeof(Plugin).Assembly); }
             catch (Exception e) { Log.LogWarning($"[{PluginName}] Harmony patch failed to apply: {e.Message}"); }
@@ -50,7 +55,7 @@ namespace NOTGS
     internal static class CombatHUD_TargetSelect_Patch
     {
         // Older gaze than this counts as no gaze, so SELECT falls back to the diamond.
-        private const int MaxGazeAgeMs = 200;
+        internal const int MaxGazeAgeMs = 200;
         private const float GameRadius = 100f;
 
         // Main thread only, and TargetSelect never re-enters, so plain statics hold the call's state.
