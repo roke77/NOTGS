@@ -54,6 +54,9 @@ namespace NOTGS
                 "Which joystick that button is on (1 = first, 0 = any). Capture joystick button sets it.");
             CaptureJoy = Config.Bind("Toggle hotkey", "Capture joystick button", false,
                 "Tick this, then press the HOTAS button you want. It is saved and this unticks itself.");
+            // A tick left on when the game closed would grab whatever button is pressed first next
+            // session, so capture always starts off.
+            CaptureJoy.Value = false;
             ConfigEntry<string> dllPath = Config.Bind("Tobii", "Stream Engine path", TobiiGaze.DefaultDllPath,
                 "tobii_stream_engine.dll from your Tobii Experience install. Restart the game after changing it.");
 
