@@ -2,6 +2,8 @@
 
 A [BepInEx](https://github.com/BepInEx/BepInEx) client-side mod for [Nuclear Option](https://store.steampowered.com/app/2168680/Nuclear_Option/) that makes **SELECT target the unit you are looking at**, using a Tobii eye tracker, instead of the unit under the HUD's center diamond.
 
+![NOTGS in flight: the red gaze circle follows the pilot's eyes and SELECT locks the unit inside it](docs/demo.gif)
+
 ## What it does
 
 Normally SELECT picks the unit marker closest to the center diamond, so you have to point your head or nose at a target before you can lock it. With NOTGS, SELECT picks the marker closest to where your eyes are on the screen.
