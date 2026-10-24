@@ -6,6 +6,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NOTGS
 {
@@ -20,10 +21,16 @@ namespace NOTGS
         internal static ConfigEntry<bool>? Enabled;
         internal static ConfigEntry<float>? PickRadius;
         internal static ConfigEntry<bool>? ShowMarker;
+        internal static ConfigEntry<KeyboardShortcut>? ToggleKey;
+        internal static ConfigEntry<int>? ToggleJoyButton;
+        internal static ConfigEntry<int>? ToggleJoyNumber;
+        internal static ConfigEntry<bool>? CaptureJoy;
 
-        // Everything here is static (config entries, Harmony patches, the gaze thread) or lives on
-        // GazeMarker's own GameObject, so it keeps working after the game destroys this plugin's
-        // GameObject on the way to the main menu.
+        private static bool spawned;
+
+        // Everything here is static (config entries, Harmony patches, the gaze thread) or lives on the
+        // NOTGS GameObject, so it keeps working after the game destroys this plugin's GameObject on the
+        // way to the main menu.
         private void Awake()
         {
             Log = Logger;
@@ -36,14 +43,37 @@ namespace NOTGS
                     new AcceptableValueRange<float>(50f, 600f)));
             ShowMarker = Config.Bind("Gaze select", "Show gaze marker", false,
                 "Draws a red circle, Pick radius in size, where you are looking while flying. A unit marker inside it is one SELECT can pick.");
+            // KeyboardShortcut.Empty, not new KeyboardShortcut(): a static-field access guarantees the
+            // type initializer that registers its config converter runs, which Mono skips for a bare
+            // struct construction.
+            ToggleKey = Config.Bind("Toggle hotkey", "Key", KeyboardShortcut.Empty,
+                "Keyboard key that turns gaze select on and off.");
+            ToggleJoyButton = Config.Bind("Toggle hotkey", "Joystick button", -1,
+                "HOTAS button that turns gaze select on and off, as a Rewired button number (-1 = none). Easiest set with Capture joystick button.");
+            ToggleJoyNumber = Config.Bind("Toggle hotkey", "Joystick number", 0,
+                "Which joystick that button is on (1 = first, 0 = any). Capture joystick button sets it.");
+            CaptureJoy = Config.Bind("Toggle hotkey", "Capture joystick button", false,
+                "Tick this, then press the HOTAS button you want. It is saved and this unticks itself.");
             ConfigEntry<string> dllPath = Config.Bind("Tobii", "Stream Engine path", TobiiGaze.DefaultDllPath,
                 "tobii_stream_engine.dll from your Tobii Experience install. Restart the game after changing it.");
 
             TobiiGaze.Start(dllPath.Value, msg => Log?.LogInfo(msg));
-            GazeMarker.SpawnOnFirstScene();
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
             try { new Harmony(PluginGuid).PatchAll(typeof(Plugin).Assembly); }
             catch (Exception e) { Log.LogWarning($"[{PluginName}] Harmony patch failed to apply: {e.Message}"); }
+        }
+
+        // The plugin's own GameObject dies on the boot -> MainMenu transition even though BepInEx
+        // marks it DontDestroyOnLoad; one created once a real scene is loaded does persist.
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (spawned) return;
+            spawned = true;
+            var go = new GameObject("NOTGS");
+            DontDestroyOnLoad(go);
+            go.AddComponent<GazeMarker>();
+            go.AddComponent<GazeToggle>();
         }
     }
 

@@ -32,6 +32,8 @@ VR is not supported.
 
 Look at a unit marker and press your usual **Select** binding.
 
+To switch gaze select on and off mid-flight, set a keyboard key or HOTAS button under **Toggle hotkey**. Pressing it shows GAZE SELECT ON or OFF on screen for a moment.
+
 To see where you are looking, turn on **Show gaze marker**. A red circle follows your gaze while you fly, and any unit marker inside it is one SELECT can pick.
 
 ## Settings
@@ -43,6 +45,9 @@ Edit them in-game with ConfigurationManager, or in `BepInEx/config/com.roque.NOT
 | Gaze select → **Enabled** | `true` | Turn gaze select on or off. Off gives you the game's normal SELECT. |
 | Gaze select → **Pick radius** | `150` | How far from your gaze, in screen pixels, a unit marker can be and still get selected (50–600). The game's own diamond uses 100. Raise it if SELECT misses units you are clearly looking at, especially near the screen edges. |
 | Gaze select → **Show gaze marker** | `false` | Draw a red circle, Pick radius in size, where you are looking while flying. Handy for tuning Pick radius. |
+| Toggle hotkey → **Key** | none | Keyboard key that turns gaze select on and off. |
+| Toggle hotkey → **Capture joystick button** | off | Tick it, then press the HOTAS button you want as the on/off toggle. It saves the button and unticks itself. |
+| Toggle hotkey → **Joystick button** / **Joystick number** | `-1` / `0` | The captured HOTAS button. You normally leave these to Capture joystick button; set **Joystick button** to `-1` to remove it. |
 | Tobii → **Stream Engine path** | `C:\Program Files\Tobii\Tobii EyeX\tobii_stream_engine.dll` | Where to find Tobii's Stream Engine. Change it only if Tobii Experience is installed somewhere else. Needs a game restart. |
 
 ## Troubleshooting

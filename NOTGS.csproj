@@ -56,6 +56,11 @@
       <HintPath>$(GameDir)\NuclearOption_Data\Managed\Mirage.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- Rewired owns the joystick/HOTAS; the toggle hotkey reads HOTAS buttons from it directly. -->
+    <Reference Include="Rewired_Core">
+      <HintPath>$(GameDir)\NuclearOption_Data\Managed\Rewired_Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <!-- CombatHUD.targetDesignator is a UnityEngine.UI.Image. -->
     <Reference Include="UnityEngine.UI">
       <HintPath>$(GameDir)\NuclearOption_Data\Managed\UnityEngine.UI.dll</HintPath>

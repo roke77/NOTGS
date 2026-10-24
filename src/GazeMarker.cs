@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NOTGS
 {
@@ -8,23 +7,8 @@ namespace NOTGS
     internal class GazeMarker : MonoBehaviour
     {
         private const float Thickness = 3f;   // ring line width in screen pixels
-
-        private static bool spawned;
         private Texture2D? ring;
         private int ringRadius;
-
-        // The plugin's own GameObject dies on the boot -> MainMenu transition even though BepInEx
-        // marks it DontDestroyOnLoad; one created once a real scene is loaded does persist.
-        internal static void SpawnOnFirstScene() => SceneManager.sceneLoaded += OnSceneLoaded;
-
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            if (spawned) return;
-            spawned = true;
-            var go = new GameObject("NOTGS_GazeMarker");
-            DontDestroyOnLoad(go);
-            go.AddComponent<GazeMarker>();
-        }
 
         private void OnGUI()
         {
