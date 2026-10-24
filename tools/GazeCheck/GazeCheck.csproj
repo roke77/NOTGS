@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Live self-check of src/TobiiGaze.cs against a real tracker, outside the game:
+       dotnet run -c Release -p:Platform=x64 -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- Stream Engine from Tobii Experience is a 64-bit DLL, as is the game. -->
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\TobiiGaze.cs" />
+  </ItemGroup>
+
+</Project>
