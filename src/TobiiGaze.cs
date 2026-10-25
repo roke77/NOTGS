@@ -69,13 +69,15 @@ namespace NOTGS
         }
 
         // Unity screen pixels start bottom-left; Stream Engine's normalized gaze starts top-left.
+        // offsetX/offsetY are the player's correction, in screen pixels (+x right, +y up), for a
+        // tracker that reads consistently off to one side.
         // ponytail: maps onto the whole game screen, which holds only when the game runs fullscreen on
         // the monitor the tracker is set up for. Windowed play would need the window rect relative to
         // that display (GetWindowRect) folded in.
-        internal static void ToScreen(float x, float y, int width, int height, out float px, out float py)
+        internal static void ToScreen(float x, float y, int width, int height, float offsetX, float offsetY, out float px, out float py)
         {
-            px = x * width;
-            py = (1f - y) * height;
+            px = x * width + offsetX;
+            py = (1f - y) * height + offsetY;
         }
 
         private static void OnGaze(ref GazePoint gaze, IntPtr userData)

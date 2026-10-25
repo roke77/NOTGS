@@ -21,6 +21,8 @@ namespace NOTGS
         internal static ConfigEntry<bool>? Enabled;
         internal static ConfigEntry<float>? PickRadius;
         internal static ConfigEntry<bool>? ShowMarker;
+        internal static ConfigEntry<float>? OffsetX;
+        internal static ConfigEntry<float>? OffsetY;
         internal static ConfigEntry<KeyboardShortcut>? ToggleKey;
         internal static ConfigEntry<int>? ToggleJoyButton;
         internal static ConfigEntry<int>? ToggleJoyNumber;
@@ -43,6 +45,14 @@ namespace NOTGS
                     new AcceptableValueRange<float>(50f, 600f)));
             ShowMarker = Config.Bind("Gaze select", "Show gaze marker", false,
                 "Draws a red circle, Pick radius in size, where you are looking while flying. A unit marker inside it is one SELECT can pick.");
+            OffsetX = Config.Bind("Gaze select", "Offset X", 0f,
+                new ConfigDescription("Shifts the gaze point, in screen pixels, for both SELECT and the gaze marker. " +
+                    "Positive moves it right, negative left. Use it when what you look at sits off-center in the marker.",
+                    new AcceptableValueRange<float>(-400f, 400f)));
+            OffsetY = Config.Bind("Gaze select", "Offset Y", 0f,
+                new ConfigDescription("Shifts the gaze point, in screen pixels, for both SELECT and the gaze marker. " +
+                    "Positive moves it up, negative down. If what you look at sits near the bottom of the marker, go negative.",
+                    new AcceptableValueRange<float>(-400f, 400f)));
             // KeyboardShortcut.Empty, not new KeyboardShortcut(): a static-field access guarantees the
             // type initializer that registers its config converter runs, which Mono skips for a bare
             // struct construction.
@@ -102,7 +112,7 @@ namespace NOTGS
 
             Transform designator = __instance.targetDesignator.transform;
             savedPosition = designator.position;
-            TobiiGaze.ToScreen(x, y, Screen.width, Screen.height, out float px, out float py);
+            TobiiGaze.ToScreen(x, y, Screen.width, Screen.height, Plugin.OffsetX!.Value, Plugin.OffsetY!.Value, out float px, out float py);
             // z stays: InRange measures 3D distance to the markers, and only the on-screen spot should move.
             designator.position = new Vector3(px, py, savedPosition.z);
         }
