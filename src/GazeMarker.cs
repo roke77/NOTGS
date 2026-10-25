@@ -21,7 +21,7 @@ namespace NOTGS
             if (ring == null || radius != ringRadius) { Destroy(ring); ring = MakeRing(radius); ringRadius = radius; }
 
             // Same mapping the SELECT patch uses; IMGUI's y runs top-down, Unity screen y bottom-up.
-            TobiiGaze.ToScreen(x, y, Screen.width, Screen.height, out float px, out float py);
+            TobiiGaze.ToScreen(x, y, Screen.width, Screen.height, Plugin.OffsetX!.Value, Plugin.OffsetY!.Value, out float px, out float py);
             float size = ring.width;
             GUI.DrawTexture(new Rect(px - size / 2f, Screen.height - py - size / 2f, size, size), ring);
         }

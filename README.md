@@ -49,7 +49,8 @@ Edit them in-game with ConfigurationManager, or in `BepInEx/config/com.roque.NOT
 |---|---|---|
 | Gaze select → **Enabled** | `true` | Turn gaze select on or off. Off gives you the game's normal SELECT. |
 | Gaze select → **Pick radius** | `150` | How far from your gaze, in screen pixels, a unit marker can be and still get selected (50–600). The game's own diamond uses 100. Raise it if SELECT misses units you are clearly looking at, which is most likely near the screen edges, where eye trackers are least accurate. Lower it if SELECT grabs the wrong unit in crowded areas. |
-| Gaze select → **Show gaze marker** | `false` | Draw the red circle where you are looking while flying. Handy for tuning Pick radius. |
+| Gaze select → **Show gaze marker** | `false` | Draw the red circle where you are looking while flying. Handy for tuning Pick radius and the offsets. |
+| Gaze select → **Offset X** / **Offset Y** | `0` / `0` | Shift where NOTGS thinks you are looking, in screen pixels (−400 to 400), for both SELECT and the red circle. Positive X moves right and positive Y moves up. If what you look at sits near the bottom of the circle, set Offset Y negative until it is centered. Recalibrating in Tobii Experience is worth trying first. |
 | Toggle hotkey → **Key** | none | Keyboard key that turns gaze select on and off. Works while you hold flight-control keys. |
 | Toggle hotkey → **Capture joystick button** | off | Tick it, then press the HOTAS button you want as the on/off toggle. It saves the button and unticks itself. |
 | Toggle hotkey → **Joystick button** / **Joystick number** | `-1` / `0` | The captured HOTAS button and the stick it is on. You normally leave these to Capture joystick button; set **Joystick button** to `-1` to remove it. |

@@ -11,10 +11,12 @@ static void Check(bool ok, string what)
     if (!ok) throw new Exception("FAIL: " + what);
 }
 
-TobiiGaze.ToScreen(0f, 0f, 1920, 1080, out float px, out float py);
+TobiiGaze.ToScreen(0f, 0f, 1920, 1080, 0f, 0f, out float px, out float py);
 Check(px == 0f && py == 1080f, "gaze at the top-left must map to Unity's top-left pixel (0, height)");
-TobiiGaze.ToScreen(1f, 1f, 1920, 1080, out px, out py);
+TobiiGaze.ToScreen(1f, 1f, 1920, 1080, 0f, 0f, out px, out py);
 Check(px == 1920f && py == 0f, "gaze at the bottom-right must map to Unity's bottom-right pixel (width, 0)");
+TobiiGaze.ToScreen(0.5f, 0.5f, 1920, 1080, 30f, -50f, out px, out py);
+Check(px == 990f && py == 490f, "Offset X/Y must shift the mapped point right and up, in screen pixels");
 
 TobiiGaze.Start(args.Length > 0 ? args[0] : TobiiGaze.DefaultDllPath, Console.WriteLine);
 var clock = Stopwatch.StartNew();
