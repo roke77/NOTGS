@@ -15,7 +15,7 @@ namespace NOTGS
     {
         internal const string PluginGuid = "com.roque.NOTGS";
         internal const string PluginName = "NOTGS";
-        internal const string PluginVersion = "0.1.0";
+        internal const string PluginVersion = "0.2.0";
 
         internal static ManualLogSource? Log;
         internal static ConfigEntry<bool>? Enabled;

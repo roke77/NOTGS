@@ -23,7 +23,7 @@
     <AssemblyName>NOTGS</AssemblyName>
     <Product>NOTGS</Product>
     <Description>Nuclear Option Tobii Gaze Select: SELECT targets what you look at</Description>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>NOTGS</RootNamespace>
